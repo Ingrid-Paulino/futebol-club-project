@@ -1,6 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
-// import OtherModel from './OtherModel';
+import ClubModel from './clubsModel';
 
 // interface IMatchsObj {
 //   ht: number;
@@ -40,7 +40,7 @@ MatchModel.init({
     autoIncrement: true,
     allowNull: false,
   },
-  home_team: DataTypes.INTEGER,
+  home_team: { type: DataTypes.INTEGER },
   home_team_goals: DataTypes.INTEGER,
   away_team: DataTypes.INTEGER,
   away_team_goals: DataTypes.INTEGER,
@@ -64,5 +64,8 @@ MatchModel.init({
 
 // Example.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
 // Example.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
+
+MatchModel.belongsTo(ClubModel, { foreignKey: 'home_team', as: 'id' });
+MatchModel.belongsTo(ClubModel, { foreignKey: 'away_team', as: 'id' });
 
 export default MatchModel;

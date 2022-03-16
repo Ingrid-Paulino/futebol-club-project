@@ -1,4 +1,5 @@
 'use strict';
+// model cria a tabela
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('matchs', {
@@ -11,30 +12,30 @@ module.exports = {
       home_team: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        references: {
+          model: 'clubs',
+          key: 'id',
+        },
       },
       home_team_goals: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
-        references: {
-          model: 'Clubs',
-          key: 'id',
-        },
       },
       away_team: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        references: {
+          model: 'clubs',
+          key: 'id',
+        },
       },
       away_team_goals: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
-        references: {
-          model: 'Clubs',
-          key: 'id',
-        },
       },
       in_progress: {
         type: Sequelize.INTEGER,

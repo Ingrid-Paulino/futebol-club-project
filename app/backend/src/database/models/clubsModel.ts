@@ -1,6 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
-import MachModel from './matchsModel';
+import MatchsModel from './matchsModel';
 
 class ClubModel extends Model {
   public id: number;
@@ -34,6 +34,7 @@ ClubModel.init({
 
 // Example.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
 // Example.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
-ClubModel.hasMany(MachModel, { foreignKey: , as: });
+ClubModel.hasMany(MatchsModel, { foreignKey: 'id', as: 'home_team' });
+ClubModel.hasMany(MatchsModel, { foreignKey: 'id', as: 'away_team' });
 
 export default ClubModel;
