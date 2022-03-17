@@ -8,11 +8,12 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      club_name: {
+      clubName: {
         type: Sequelize.STRING,
         allowNull: false,
+        field: 'club_name',
       },
-    });
+    }, { underscored: true });
   },
   down: async (queryInterface, _Sequelize) => {
     await queryInterface.dropTable('clubs');

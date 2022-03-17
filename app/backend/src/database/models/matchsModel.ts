@@ -1,6 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
-import ClubModel from './clubsModel';
 
 // interface IMatchsObj {
 //   ht: number;
@@ -10,7 +9,7 @@ import ClubModel from './clubsModel';
 //   ip: number;
 // }
 
-class MatchModel extends Model {
+class MatchsModel extends Model {
   public id: number;
 
   public homeTeam: number;
@@ -33,24 +32,43 @@ class MatchModel extends Model {
   // }
 }
 
-MatchModel.init({
+MatchsModel.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
   },
-  home_team: { type: DataTypes.INTEGER },
-  home_team_goals: DataTypes.INTEGER,
-  away_team: DataTypes.INTEGER,
-  away_team_goals: DataTypes.INTEGER,
-  in_progress: DataTypes.INTEGER,
+  homeTeam: {
+    type: DataTypes.INTEGER,
+    field: 'home_team',
+    allowNull:false
+  },
+  homeTeamGoals: {
+    type: DataTypes.INTEGER,
+    field: 'home_team_goals',
+    allowNull: false
+  },
+  awayTeam: {
+    type: DataTypes.INTEGER,
+    field: 'away_team',
+    allowNull: false
+  },
+  awayTeamGoals: {
+    type: DataTypes.INTEGER,
+    field: 'away_team_goals',
+    allowNull: false
+  },
+  inProgress: {
+    type: DataTypes.INTEGER,
+    field: 'in_progress',
+    allowNull: false
+  },
 }, {
   // ... Outras configs
   underscored: true,
   sequelize: db,
-  modelName: 'Match',
-  tableName: 'matchs',
+  modelName: 'matchs',
   timestamps: false,
 });
 
@@ -65,7 +83,4 @@ MatchModel.init({
 // Example.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
 // Example.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
 
-MatchModel.belongsTo(ClubModel, { foreignKey: 'home_team', as: 'id' });
-MatchModel.belongsTo(ClubModel, { foreignKey: 'away_team', as: 'id' });
-
-export default MatchModel;
+export default MatchsModel;
