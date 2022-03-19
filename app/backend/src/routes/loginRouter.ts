@@ -3,6 +3,6 @@ import LoginValidation from '../middlewares/loginValidated';
 
 const loginRoute = express.Router({ mergeParams: true });
 
-loginRoute.post('/', LoginValidation, () => {});
+loginRoute.post('/', LoginValidation.validateParams, () => {});
 
 export default loginRoute;

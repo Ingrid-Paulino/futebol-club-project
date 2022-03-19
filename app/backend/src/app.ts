@@ -1,6 +1,6 @@
 import * as express from 'express';
 import routes from './routes';
-import error from './middlewares/error';
+import ErrorMiddleware from './middlewares/error';
 
 class App {
   public app: express.Express;
@@ -10,13 +10,14 @@ class App {
     this.app = express();
     this.config();
     this.route();
+    this.app.use(express.json());
     // ...
   }
 
   // route === rotas
   private route():void {
     this.app.use(routes);
-    this.app.use(error);
+    this.app.use(ErrorMiddleware.error1);
   }
 
   private config():void {
@@ -33,6 +34,8 @@ class App {
 
   // ...
   public start(PORT: string | number):void {
+    this.route();
+    // this.app.use(routes);
     this.app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));
   }
 }
