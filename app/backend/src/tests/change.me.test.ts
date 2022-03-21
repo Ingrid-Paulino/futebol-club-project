@@ -4,120 +4,125 @@ import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 import Example from '../database/models/ExampleModel';
-import UserModel from '../database/models/usersModel'
-import { Login } from '../interfaces/Ilogin'
+import LoginController from '../controllers/loginController';
+import { ILogin, LoginMock } from '../interfaces/ILogin';
 
 import { Response } from 'superagent';
+// import { LoginMock } from '../types' 
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Seu teste', () => {
-  /**
-   * Exemplo do uso de stubs com tipos
-   */
+// // describe('Seu teste', () => {
+// //   /**
+// //    * Exemplo do uso de stubs com tipos
+// //    */
 
-  // let chaiHttpResponse: Response;
+// //   // let chaiHttpResponse: Response;
 
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
+// //   // before(async () => {
+// //   //   sinon
+// //   //     .stub(Example, "findOne")
+// //   //     .resolves({
+// //   //       ...<Seu mock>
+// //   //     } as Example);
+// //   // });
 
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
+// //   // after(()=>{
+// //   //   (Example.findOne as sinon.SinonStub).restore();
+// //   // })
 
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
+// //   // it('...', async () => {
+// //   //   chaiHttpResponse = await chai
+// //   //      .request(app)
+// //   //      ...
 
-  //   expect(...)
-  // });
+// //   //   expect(...)
+// //   // });
 
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
-  });
-});
+// //   it('Seu sub-teste', () => {
+// //     expect(false).to.be.eq(true);
+// //   });
+// // });
 
 
-describe('Rota /api/login', () => {
-  describe('Consulta a lista de pessoas usuárias', () => {
-    /**
-   * Exemplo do uso de stubs com tipos
-   */
+// // describe('Rota /api/login', () => {
+// //   describe('Consulta a lista de pessoas usuárias', () => {
+// //     /**
+// //    * Exemplo do uso de stubs com tipos
+// //    */
 
-  // let chaiHttpResponse: Response;
+// //   // let chaiHttpResponse: Response;
 
-  before(async () => {
-    sinon
-      .stub(UserModel, "create")
-      .resolves({
-        ...<Seu mock>
-      } as Example);
-  });
+// //   before(async () => {
+// //     sinon
+// //       .stub(UserModel, "create")
+// //       .resolves({
+// //         ...<Seu mock>
+// //       } as Example);
+// //   });
 
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
+// //   // after(()=>{
+// //   //   (Example.findOne as sinon.SinonStub).restore();
+// //   // })
 
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
+// //   // it('...', async () => {
+// //   //   chaiHttpResponse = await chai
+// //   //      .request(app)
+// //   //      ...
 
-  //   expect(...)
-  // });
+// //   //   expect(...)
+// //   // });
 
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
-  });
-  })
+// //   it('Seu sub-teste', () => {
+// //     expect(false).to.be.eq(true);
+// //   });
+// //   })
   
-});
+// // });
 
-describe('Rota /api/login', () => {
-  describe('Testa se é possivel criar um login', () => {
-  const mock = {
-    email: 'email@gmail.com',
-    password: '12345678',
-  }
+// describe('Rota /api/login', () => {
+//   describe('Testa se é possivel criar um login', () => {
+//   const mock = {
+//     user: {
+//       email: 'email@gmail.com',
+//       password: '12345678',
+//       role: 'admin'
+//     },
+//     token: '111.222.222'
+//   }
 
-  before(async () => {
-    sinon.stub(UserModel, "create")
-      .resolves( mock as Login);
-  });
+//   before(async () => {
+//     sinon.stub(LoginController, "createLogin")
+//       .resolves(mock as LoginMock);
+//   });
 
-  after(()=>{
-    (UserModel.create as sinon.SinonStub).restore();
-  })
+//   after(()=>{
+//     (LoginController.createLogin as sinon.SinonStub).restore();
+//   })
 
-  describe('Verifica se usuario foi criado', () => { second })
+//   describe('Verifica se usuario foi criado', () => { second })
 
-  let chaiHttpResponse: Response;
+//   let chaiHttpResponse: Response;
 
-  before(async () => {
-    chaiHttpResponse = await chai
-       .request(app)
-       .post('/login')
-  })
+//   before(async () => {
+//     chaiHttpResponse = await chai
+//        .request(app)
+//        .post('/login')
+//   })
 
-  it('Essa requisição deve retornar código de status 200', async () => {
-    expect(chaiHttpResponse).to.have.status(200);
-  });
-});
+//   it('Essa requisição deve retornar código de status 200', async () => {
+//     expect(chaiHttpResponse).to.have.status(200);
+//   });
+// });
 
 
 describe('Insere um novo registro', () => {
-  let createRequest = {};
+  let createRequest: Response;
   const newLogin = {
-    email: 'email@gmail.com',
-    password: '12345678',
+    email: 'admin@admin.com',
+    password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW',
   };
 
   before(async () => {
@@ -127,20 +132,23 @@ describe('Insere um novo registro', () => {
           .send(newLogin);
   });
 
-it('createRequest: A requisição POST para a rota retorna o código de status 201', () => { 
-  expect(createRequest).to.have.status(201);
+it('createRequest: A requisição POST para a rota retorna o código de status 200', () => { 
+  expect(createRequest).to.have.status(200);
 });
 
 it('createRequest: A requisição deve retornar um objeto no corpo da resposta', () => {
   expect(createRequest.body).to.be.a('object');
 });
 
+
 it('createRequest: O objeto possui a propriedade "email"', () => {
-  expect(createRequest.body).to.have.property('email');
+console.log('createRequest', createRequest);
+  
+  expect(createRequest.body.user).to.have.property('email');
 });
 
-it('createRequest: A propriedade "email" possui o texto "email@gmail.com"',
+it('createRequest: A propriedade "email" possui o texto "admin@admin.com"',
 () => {
-  expect(createRequest.body.message).to.be.equal('email@gmail.com');
+  expect(createRequest.body.user.email).to.be.equal('admin@admin.com');
+})
 });
-

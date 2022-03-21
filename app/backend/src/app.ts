@@ -8,9 +8,9 @@ class App {
 
   constructor() {
     this.app = express();
+    this.app.use(express.json());
     this.config();
     this.route();
-    this.app.use(express.json());
     // ...
   }
 
