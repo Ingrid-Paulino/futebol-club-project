@@ -12,27 +12,27 @@ class ValidateJWT {
     return SECRET;
   }
 
-  static createToken() {
-    const validate = async (req: Request, res: Response, next: NextFunction) => {
-      const token = req.headers.authorization;
+  static async verifyToken(req: Request, res: Response, next: NextFunction) {
+    const token = req.headers.authorization;
+    // const { authorization } = req.headers;
 
-      if (!token) return res.status(401).json({ message: 'Token not found' });
-      try {
-        const decoded = jwt.verify(token, ValidateJWT.key()) as DecodeData;
+    if (!token || token === '') return res.status(401).json({ message: 'Token not found' });
 
-        const user = await UserModel.findOne({ where: { email: decoded.data } });
+    try {
+      const decoded = jwt.verify(token, ValidateJWT.key()) as DecodeData;
+      // console.log({ decoded });
 
-        if (!user) return res.status(404).json({ message: 'User does not exist' });
+      const user = await UserModel.findOne({ where: { email: decoded.data.email } });
 
-        req.body = user;
+      if (!user) return res.status(404).json({ message: 'User does not exist' });
 
-        next();
-      } catch (err) {
-        next(validateError(StatusCodes.UNAUTHORIZED, MSG.TOKEN_INVALID));
-      }
-    };
+      req.body = { ...req.body, user };
+      // console.log(req.body);
 
-    return validate;
+      next();
+    } catch (err) {
+      next(validateError(StatusCodes.UNAUTHORIZED, MSG.TOKEN_INVALID));
+    }
   }
 }
 

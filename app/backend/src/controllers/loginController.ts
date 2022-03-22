@@ -37,6 +37,22 @@ class LoginController {
       next(error);
     }
   }
+
+  public static async getAll(req: Request, res: Response) {
+    const response = await loginService.getAll();
+    res.status(200).json(response);
+  }
+
+  public static async getLoginRole(req: Request, res: Response, next: NextFunction) {
+    try {
+      // console.log('reqBody', req.body);
+      const { role } = req.body.user.dataValues;
+
+      return res.status(200).json(role);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default LoginController;
