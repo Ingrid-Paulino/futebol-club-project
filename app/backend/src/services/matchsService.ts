@@ -3,22 +3,23 @@ import MatchsModel from '../database/models/matchsModel';
 import ClubsModel from '../database/models/clubsModel';
 
 class MatchService {
-  public static async getAll(inProgress: string[]) {
+  public static async getAll(inProgress: string) {
     try {
-      const filtered = await MatchsModel.findAll({
-        where: {
-          [Op.or]: [
-            { title: { [Op.like]: `%${inProgress}%` } },
-            { content: { [Op.like]: `%${inProgress}%` } },
+      if (inProgress === 'true') {
+        const inProgressTrue = 1;
+        const filtered = await MatchsModel.findAll({
+          where: {
+            [Op.or]: [{ inProgress: { [Op.like]: `%${inProgressTrue}%` } }],
+          },
+          include: [
+            { model: ClubsModel, as: 'homeClub', attributes: ['clubName'] },
+            { model: ClubsModel, as: 'awayClub', attributes: ['clubName'] },
           ],
-        },
-        include: [
-          { model: ClubsModel, as: 'homeClub', attributes: ['clubName'] },
-          { model: ClubsModel, as: 'awayClub', attributes: ['clubName'] },
-        ],
-      });
+        });
+        return filtered;
+      }
 
-      return filtered;
+      return [];
     } catch (error) { console.log(error); }
   }
 }

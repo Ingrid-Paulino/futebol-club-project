@@ -174,58 +174,58 @@ describe('Testa rota POST /login', () => {
       })
     })
 
-    describe('Filtra todos os /login', () => {
-      let chaiHttpResponse: Response;
+//     describe('Filtra todos os /login', () => {
+//       let chaiHttpResponse: Response;
 
-      before(async () => {
-        sinon.stub(UserModel, "findAll")
-          .resolves(userEveryMock as UserEveryMock[]);
-      });
+//       before(async () => {
+//         sinon.stub(UserModel, "findAll")
+//           .resolves(userEveryMock as UserEveryMock);
+//       });
 
-      after(() => {
-        (UserModel.findAll as sinon.SinonStub).restore();
-      })
+//       after(() => {
+//         (UserModel.findAll as sinon.SinonStub).restore();
+//       })
 
-      it('Essa requisição deve retornar código de status 200', async () => {
-        chaiHttpResponse = await chai.request(app).get('/login');
-        expect(chaiHttpResponse).to.have.status(200);
-        // expect(chaiHttpResponse.status).to.be.equal(200);
-        expect(chaiHttpResponse.body).to.be.deep.equal(userEveryMock);
-      });
+//       it('Essa requisição deve retornar código de status 200', async () => {
+//         chaiHttpResponse = await chai.request(app).get('/login');
+//         expect(chaiHttpResponse).to.have.status(200);
+//         // expect(chaiHttpResponse.status).to.be.equal(200);
+//         expect(chaiHttpResponse.body).to.be.deep.equal(userEveryMock);
+//       });
 
-      it('chaiHttpResponse: O objeto possui a propriedade "email"', () => {
-        // console.log('createRequest', createRequest);
-        expect(chaiHttpResponse.body.user).to.have.property('email');
-      })
+//       it('chaiHttpResponse: O objeto possui a propriedade "email"', () => {
+//         // console.log('createRequest', createRequest);
+//         expect(chaiHttpResponse.body.user).to.have.property('email');
+//       })
 
-      it('chaiHttpResponse: A requisição deve retornar um objeto no corpo da resposta', () => {
-        expect(chaiHttpResponse.body).to.be.a('object');
-      });
+//       it('chaiHttpResponse: A requisição deve retornar um objeto no corpo da resposta', () => {
+//         expect(chaiHttpResponse.body).to.be.a('object');
+//       });
 
-      it('chaiHttpResponse: A propriedade "email" possui o texto "admin@admin.com"',
-        () => {
-          expect(chaiHttpResponse.body.user.email).to.be.equal('admin@admin.com');
-        })
-    })
-  });
+//       it('chaiHttpResponse: A propriedade "email" possui o texto "admin@admin.com"',
+//         () => {
+//           expect(chaiHttpResponse.body.user.email).to.be.equal('admin@admin.com');
+//         })
+//     })
+//   });
 
-  describe('Testa rota POST /login/validate', () => {
-    let chaiHttpResponse: Response;
-    const user = userMock as UserModel;
+//   describe('Testa rota POST /login/validate', () => {
+//     let chaiHttpResponse: Response;
+//     const user = userMock as UserModel;
 
-    before(async () => {
-      sinon.stub(UserModel, "findOne").resolves(user);
-    })
+//     before(async () => {
+//       sinon.stub(UserModel, "findOne").resolves(user);
+//     })
 
-    after(() => {
-      (UserModel.findOne as sinon.SinonStub).restore();
-    })
+//     after(() => {
+//       (UserModel.findOne as sinon.SinonStub).restore();
+//     })
 
-    it('Testa o retorno do status 200 e o tipo de usuário', async () => {
-      chaiHttpResponse = await chai.request(app).get('/login/validate');
+//     it('Testa o retorno do status 200 e o tipo de usuário', async () => {
+//       chaiHttpResponse = await chai.request(app).get('/login/validate');
 
-      expect(chaiHttpResponse.status).to.be.equal(200);
-      expect(chaiHttpResponse.text).to.be.equal(user.role);
-    })
-  });
-});
+//       expect(chaiHttpResponse.status).to.be.equal(200);
+//       expect(chaiHttpResponse.text).to.be.equal(user.role);
+//     })
+//   });
+}) })
