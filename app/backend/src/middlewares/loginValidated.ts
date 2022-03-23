@@ -10,7 +10,7 @@ export default class LoginValidation {
     if (!email || !password) return next(validateError(401, 'All fields must be filled'));
 
     const { error } = Schema.loginSchema.validate({ email, password });
-    console.log('loginValidate', error);
+    // console.log('loginValidate', error);
 
     if (error) return next(validateError(401, 'Incorrect email or password'));
 

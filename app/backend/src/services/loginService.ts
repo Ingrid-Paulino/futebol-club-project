@@ -13,7 +13,7 @@ class LoginService {
   }
 
   static async getAll() {
-    return UserModel.findAll();
+    return UserModel.findAll({ attributes: { exclude: ['password'] } });
   }
 
   static async login({ email, password }: ILogin) {

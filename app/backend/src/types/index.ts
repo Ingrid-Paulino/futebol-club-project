@@ -12,6 +12,10 @@ export type JwtConfig = {
 
 export type Token = string;
 
+// export type MockToken = {
+//   token: string,
+// };
+
 export type DecodeData = {
   data: {
     email: string,
@@ -44,19 +48,17 @@ export type TUserModel = {
   token: string,
 };
 
-// export type UserEvery = [
-//   {
-//     id: number,
-//     username: string,
-//     role: string,
-//     email: string,
-//     password: string,
-//   },
-//   {
-//     id: number,
-//     username: string,
-//     role: string,
-//     email: string,
-//     password: string,
-//   }
-// ]
+export type UserEveryMock = [
+  {
+    'id': 1,
+    'username': 'Admin',
+    'role': 'admin',
+    'email': 'admin@admin.com',
+  },
+  {
+    'id': 2,
+    'username': 'Clara',
+    'role': 'admin',
+    'email': 'clara@user.com',
+  },
+];
