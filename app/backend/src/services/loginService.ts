@@ -35,16 +35,6 @@ class LoginService {
       return userData;
     } catch (error) { console.log(error); }
   }
-
-  // public static async getRole(userId: number) {
-  //   const user = await UserModel.findOne({ where: { id: userId } });
-  //   // console.log({ user });
-
-  //   const { role } = user as User;
-  //   // console.log({ role });
-
-  //   return role;
-  // }
 }
 
 export default LoginService;

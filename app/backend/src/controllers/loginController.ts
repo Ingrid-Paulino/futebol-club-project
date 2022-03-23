@@ -24,7 +24,7 @@ class LoginController {
       // }
 
       if ((response as ILoginError).status) {
-        return res.status(StatusCodes.UNAUTHORIZED).json({ error: MSG.INCORRECT_LOGIN_PASSWORD });
+        return res.status(StatusCodes.UNAUTHORIZED).json({ error: MSG.INCORRECT_EMAIL_PASSWORD });
       }
 
       const token = CreateToken.createToken({ email, password });
