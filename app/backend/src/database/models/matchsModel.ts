@@ -42,27 +42,27 @@ MatchsModel.init({
   homeTeam: {
     type: DataTypes.INTEGER,
     field: 'home_team',
-    allowNull:false
+    allowNull: false,
   },
   homeTeamGoals: {
     type: DataTypes.INTEGER,
     field: 'home_team_goals',
-    allowNull: false
+    allowNull: false,
   },
   awayTeam: {
     type: DataTypes.INTEGER,
     field: 'away_team',
-    allowNull: false
+    allowNull: false,
   },
   awayTeamGoals: {
     type: DataTypes.INTEGER,
     field: 'away_team_goals',
-    allowNull: false
+    allowNull: false,
   },
   inProgress: {
     type: DataTypes.INTEGER,
     field: 'in_progress',
-    allowNull: false
+    allowNull: false,
   },
 }, {
   // ... Outras configs
