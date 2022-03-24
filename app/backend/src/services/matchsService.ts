@@ -1,8 +1,11 @@
 import { Op } from 'sequelize';
 import MatchsModel from '../database/models/matchsModel';
 import ClubsModel from '../database/models/clubsModel';
+import ClubService from './clubService';
 import { Club } from '../interfaces/IClub';
 import { ICreateMatch } from '../interfaces/IMatch';
+import { IError } from '../interfaces/IError';
+import ValidateError from '../utils';
 
 class MatchService {
   public static async getAll() {
@@ -51,6 +54,13 @@ class MatchService {
     const {
       homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress,
     } = camposMatchs;
+
+    const club1 = await ClubService.getById(homeTeam);
+    const club2 = await ClubService.getById(awayTeam);
+
+    if ((club1 as IError).status || (club2 as IError).status) {
+      throw ValidateError(401, 'There is no team with such id!') as unknown as Error;
+    }
 
     return MatchsModel.create({
       homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress,

@@ -1,6 +1,7 @@
 import * as express from 'express';
-import routes from './routes';
 import * as cors from 'cors';
+
+import routes from './routes';
 import ErrorMiddleware from './middlewares/error';
 
 class App {
