@@ -20,16 +20,16 @@ class MatchController {
       homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress,
     }: ICreateMatch = req.body;
 
+    if (homeTeam === awayTeam) {
+      return res.status(401).json({
+        message: 'It is not possible to create a match with two equal teams' });
+    }
+
     const response = await matchService.createMatch({
       homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress,
     });
-    console.log('response', response);
 
-    // if (response.homeTeam === response.awayTeam) {
-    //   return res.
-    // }
-
-    return res.status(200).json({
+    return res.status(201).json({
       id: response.id,
       homeTeam: response.homeTeam,
       awayTeam: response.awayTeam,
@@ -40,11 +40,8 @@ class MatchController {
   }
 
   public static async updatePatch(req: Request, res: Response) {
-    // const id = parseInt(req.params.id);
     const { id } = req.params;
-
     await matchService.patch(+id);
-
     return res.status(200).json({ message: 'Match finished' });
   }
 }
