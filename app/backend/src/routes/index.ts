@@ -6,7 +6,7 @@ import matchsRoute from './matchsRouter';
 const route = express.Router({ mergeParams: true });
 
 route.use('/login', loginRoute);
-route.use('/club', clubRoute);
+route.use('/clubs', clubRoute);
 route.use('/matchs', matchsRoute);
 
 export default route;
