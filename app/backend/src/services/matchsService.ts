@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import MatchsModel from '../database/models/matchsModel';
 import ClubsModel from '../database/models/clubsModel';
 import { Club } from '../interfaces/IClub';
+import { ICreateMatch } from '../interfaces/IMatch';
 
 class MatchService {
   public static async getAll() {
@@ -44,6 +45,16 @@ class MatchService {
         return filtered;
       }
     } catch (error) { console.log(error); }
+  }
+
+  public static async createMatch(a: ICreateMatch) {
+    const {
+      homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress,
+    } = a;
+
+    return MatchsModel.create({
+      homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress,
+    });
   }
 }
 
