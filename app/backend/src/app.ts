@@ -1,5 +1,6 @@
 import * as express from 'express';
 import routes from './routes';
+import * as cors from 'cors';
 import ErrorMiddleware from './middlewares/error';
 
 class App {
@@ -29,13 +30,12 @@ class App {
     };
 
     this.app.use(accessControl);
+    this.app.use(cors());
     // ...
   }
 
   // ...
   public start(PORT: string | number):void {
-    this.route();
-    // this.app.use(routes);
     this.app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));
   }
 }

@@ -47,14 +47,21 @@ class MatchService {
     } catch (error) { console.log(error); }
   }
 
-  public static async createMatch(a: ICreateMatch) {
+  public static async createMatch(camposMatchs: ICreateMatch) {
     const {
       homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress,
-    } = a;
+    } = camposMatchs;
 
     return MatchsModel.create({
       homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress,
     });
+  }
+
+  public static async patch(id: number) {
+    await MatchsModel.update(
+      { inProgress: 0 },
+      { where: { id } },
+    );
   }
 }
 
