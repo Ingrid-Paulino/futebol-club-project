@@ -70,5 +70,4 @@ class ErrorMiddleware {
 //   //   },
 //   // });
 // };
-
 export default ErrorMiddleware;
