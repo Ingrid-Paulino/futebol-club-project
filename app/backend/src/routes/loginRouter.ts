@@ -8,6 +8,4 @@ const loginRoute = express.Router({ mergeParams: true });
 loginRoute.post('/', LoginValidation.validateParams, LoginController.createLogin);
 loginRoute.get('/validate', ValidateJWT.verifyToken, LoginController.getLoginRole);
 
-loginRoute.get('/', LoginController.getAll);
-
 export default loginRoute;

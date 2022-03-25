@@ -10,16 +10,14 @@ import { TPartida } from '../types';
 
 class MatchService {
   public static async getAll() {
-    try {
-      const filtered = await MatchsModel.findAll({
-        include: [
-          { model: ClubsModel, as: 'homeClub', attributes: ['clubName'] },
-          { model: ClubsModel, as: 'awayClub', attributes: ['clubName'] },
-        ],
-      });
+    const filtered = await MatchsModel.findAll({
+      include: [
+        { model: ClubsModel, as: 'homeClub', attributes: ['clubName'] },
+        { model: ClubsModel, as: 'awayClub', attributes: ['clubName'] },
+      ],
+    });
 
-      return filtered;
-    } catch (error) { console.log(error); }
+    return filtered;
   }
 
   // public static changeRes(param: Club[]) {
@@ -31,24 +29,22 @@ class MatchService {
   // }
 
   public static async getAllEndSearch(inProgress: string) {
-    try {
-      if (inProgress === 'true') {
-        const inProgressTrue = 1;
-        const filtered = await MatchsModel.findAll({
-          where: {
-            [Op.or]: [{ inProgress: { [Op.like]: `%${inProgressTrue}%` } }],
-          },
-          include: [
-            { model: ClubsModel, as: 'homeClub', attributes: ['clubName'] },
-            { model: ClubsModel, as: 'awayClub', attributes: ['clubName'] },
-          ],
-        }) as unknown as Club[];
+    if (inProgress === 'true') {
+      const inProgressTrue = 1;
+      const filtered = await MatchsModel.findAll({
+        where: {
+          [Op.or]: [{ inProgress: { [Op.like]: `%${inProgressTrue}%` } }],
+        },
+        include: [
+          { model: ClubsModel, as: 'homeClub', attributes: ['clubName'] },
+          { model: ClubsModel, as: 'awayClub', attributes: ['clubName'] },
+        ],
+      }) as unknown as Club[];
 
-        // const response = MatchService.changeRes(filtered);
-        // console.log({ response });
-        return filtered;
-      }
-    } catch (error) { console.log(error); }
+      // const response = MatchService.changeRes(filtered);
+      // console.log({ response });
+      return filtered;
+    }
   }
 
   public static async createMatch(camposMatchs: ICreateMatch) {
@@ -69,20 +65,23 @@ class MatchService {
   }
 
   public static async patch(id: number) {
-    await MatchsModel.update(
+    const matchUpdateReturn = await MatchsModel.update(
       { inProgress: 0 },
       { where: { id } },
     );
+    // console.log({ matchUpdateReturn });
+    return matchUpdateReturn;
   }
 
   public static async getById(partida: TPartida, id: number) {
     const { homeTeamGoals, awayTeamGoals } = partida;
-    try {
-      MatchsModel.update(
-        { homeTeamGoals, awayTeamGoals },
-        { where: { id } },
-      );
-    } catch (error) { console.log(error); }
+
+    const updateReturn = await MatchsModel.update(
+      { homeTeamGoals, awayTeamGoals },
+      { where: { id } },
+    );
+    // console.log({ updateReturn });
+    return updateReturn;
   }
 }
 

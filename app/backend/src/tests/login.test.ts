@@ -7,9 +7,11 @@ import { app } from '../app';
 import { Response } from 'superagent';
 
 import UserModel from '../database/models/usersModel';
-import { userMock, userEveryMock, tokenMock } from './mocks/mockLogin';
+import { userMock, userMockComplet, tokenMock } from './mocks/mockLogin';
 import { MSG } from '../enum';
 import { User, TUserModel, Token, UserEveryMock } from '../types';
+import { ILogin } from '../interfaces/ILogin';
+
 
 import CreateToken from '../services/createToken';
 
@@ -104,14 +106,33 @@ describe('Testa rota POST /login', () => {
   describe('Testa se e-mail é invalido ', () => {
     let chaiHttpResponse: Response;
     const body = { email: 'email.com', password: '123456' }
-    const response = { message: MSG.INCORRECT_EMAIL_PASSWORD }
+    const response = MSG.INCORRECT_EMAIL_PASSWORD;
 
-    it('Retorna status 401 e a mensagem "Incorrect email or password"', async () => {
+    before(async () => {
+      sinon.stub(UserModel, "create")
+        .resolves(userMock as UserModel);
+      sinon.stub(CreateToken, "createToken")
+        .returns(tokenMock as Token);
+      // chaiHttpResponse = await chai.request(app).post('/login').send()
+    });
+
+    after(() => {
+      (UserModel.findOne as sinon.SinonStub).restore();
+      (CreateToken.createToken as sinon.SinonStub).restore();
+    })
+
+    it('Essa requisição deve retornar código de status 401', async () => {
       chaiHttpResponse = await chai.request(app).post('/login').send(body)
+      expect(chaiHttpResponse).to.have.status(401);
+    });
+    it('Essa requisição deve retornar a mensagem', async () => {
+      chaiHttpResponse = await chai.request(app).post('/login').send(body)
+      expect(chaiHttpResponse.body.message).to.be.deep.equal(response);
+    });
 
-      expect(chaiHttpResponse.status).to.be.equal(401);
+    it('A requisição tem uma chave message"', async () => {
+      chaiHttpResponse = await chai.request(app).post('/login').send(body)
       expect(chaiHttpResponse.body).to.have.property('message');
-      expect(chaiHttpResponse.body.message).to.be.equal(response);
     })
 
     describe('Testa se não passar senha', () => {
@@ -133,6 +154,7 @@ describe('Testa rota POST /login', () => {
         expect(chaiHttpResponse.status).to.be.equal(401);
         expect(chaiHttpResponse.body).to.be.deep.equal(response);
       })
+    })
 
       describe('Ao passar um login inválido', () => {
         let chaiHttpResponse: Response;
@@ -143,11 +165,14 @@ describe('Testa rota POST /login', () => {
         before(async () => { sinon.stub(UserModel, "findOne").resolves(null); });
         after(() => { (UserModel.findOne as sinon.SinonStub).restore(); });
 
-        it('retorna status 401 e a mensagem "Incorrect email or password"', async () => {
+        it('retorna status 401', async () => {
           chaiHttpResponse = await chai.request(app).post('/login').send(body);
-
           expect(chaiHttpResponse.status).to.be.equal(401);
-          expect(chaiHttpResponse.body).to.be.deep.equal(response);
+        });
+
+        it('retorna a mensagem "Incorrect email or password"', async () => {
+          chaiHttpResponse = await chai.request(app).post('/login').send(body);
+          expect(chaiHttpResponse.body).to.be.equal(response);
         });
       });
 
@@ -167,65 +192,14 @@ describe('Testa rota POST /login', () => {
           expect(chaiHttpResponse).to.have.status(401);
         })
 
-        it('Deve retornar a mensagem: "Incorrect email or password" ', () => {
+        it('Deve ter uma chave message" ', () => {
           expect(chaiHttpResponse.body).to.have.property('message');
-          expect(chaiHttpResponse.body.message).to.eq("Incorrect email or password");
+        })
+
+        it('Deve retornar a mensagem: "All fields must be filled" ', () => {
+          // console.log(chaiHttpResponse);
+          expect(chaiHttpResponse.body.message).to.eq("All fields must be filled");
         })
       })
     })
-
-//     describe('Filtra todos os /login', () => {
-//       let chaiHttpResponse: Response;
-
-//       before(async () => {
-//         sinon.stub(UserModel, "findAll")
-//           .resolves(userEveryMock as UserEveryMock);
-//       });
-
-//       after(() => {
-//         (UserModel.findAll as sinon.SinonStub).restore();
-//       })
-
-//       it('Essa requisição deve retornar código de status 200', async () => {
-//         chaiHttpResponse = await chai.request(app).get('/login');
-//         expect(chaiHttpResponse).to.have.status(200);
-//         // expect(chaiHttpResponse.status).to.be.equal(200);
-//         expect(chaiHttpResponse.body).to.be.deep.equal(userEveryMock);
-//       });
-
-//       it('chaiHttpResponse: O objeto possui a propriedade "email"', () => {
-//         // console.log('createRequest', createRequest);
-//         expect(chaiHttpResponse.body.user).to.have.property('email');
-//       })
-
-//       it('chaiHttpResponse: A requisição deve retornar um objeto no corpo da resposta', () => {
-//         expect(chaiHttpResponse.body).to.be.a('object');
-//       });
-
-//       it('chaiHttpResponse: A propriedade "email" possui o texto "admin@admin.com"',
-//         () => {
-//           expect(chaiHttpResponse.body.user.email).to.be.equal('admin@admin.com');
-//         })
-//     })
-//   });
-
-//   describe('Testa rota POST /login/validate', () => {
-//     let chaiHttpResponse: Response;
-//     const user = userMock as UserModel;
-
-//     before(async () => {
-//       sinon.stub(UserModel, "findOne").resolves(user);
-//     })
-
-//     after(() => {
-//       (UserModel.findOne as sinon.SinonStub).restore();
-//     })
-
-//     it('Testa o retorno do status 200 e o tipo de usuário', async () => {
-//       chaiHttpResponse = await chai.request(app).get('/login/validate');
-
-//       expect(chaiHttpResponse.status).to.be.equal(200);
-//       expect(chaiHttpResponse.text).to.be.equal(user.role);
-//     })
-//   });
-}) })
+})

@@ -38,11 +38,6 @@ class LoginController {
     }
   }
 
-  public static async getAll(req: Request, res: Response) {
-    const response = await loginService.getAll();
-    res.status(200).json(response);
-  }
-
   public static async getLoginRole(req: Request, res: Response, next: NextFunction) {
     try {
       // console.log('reqBody', req.body);

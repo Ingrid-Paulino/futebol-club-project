@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import clubService from '../services/clubService';
 
 class ClubController {
@@ -7,9 +7,11 @@ class ClubController {
     res.status(200).json(response);
   }
 
-  public static async getById(req: Request, res: Response) {
+  public static async getById(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     const response = await clubService.getById(+id);
+    if ('status' in response) return next(response);
+
     return res.status(200).json(response);
   }
 }

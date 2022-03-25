@@ -12,10 +12,6 @@ class LoginService {
     return true;
   }
 
-  static async getAll() {
-    return UserModel.findAll({ attributes: { exclude: ['password'] } });
-  }
-
   static async login({ email, password }: ILogin) {
     const hash = bcrypt.hashSync(password, 10);
     try {
@@ -23,6 +19,8 @@ class LoginService {
       const foundUser = await UserModel.findOne({ where: { email },
         attributes: { exclude: ['password'] },
       });
+      console.log({ foundUser });
+
       if (!foundUser || !check) return validateError(400, 'Invalid fields');
       const userData = {
         user: {
