@@ -6,6 +6,7 @@ import { Club } from '../interfaces/IClub';
 import { ICreateMatch } from '../interfaces/IMatch';
 import { IError } from '../interfaces/IError';
 import ValidateError from '../utils';
+import { TPartida } from '../types';
 
 class MatchService {
   public static async getAll() {
@@ -72,6 +73,16 @@ class MatchService {
       { inProgress: 0 },
       { where: { id } },
     );
+  }
+
+  public static async getById(partida: TPartida, id: number) {
+    const { homeTeamGoals, awayTeamGoals } = partida;
+    try {
+      MatchsModel.update(
+        { homeTeamGoals, awayTeamGoals },
+        { where: { id } },
+      );
+    } catch (error) { console.log(error); }
   }
 }
 

@@ -62,3 +62,8 @@ export type UserEveryMock = [
     'email': 'clara@user.com',
   },
 ];
+
+export type TPartida = {
+  homeTeamGoals: number,
+  awayTeamGoals: number,
+};

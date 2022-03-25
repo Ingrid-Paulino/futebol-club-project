@@ -21,14 +21,6 @@ class MatchController {
     }: ICreateMatch = req.body;
     console.log('0i1');
 
-    // const club1 = await ClubService.getById(homeTeam);
-    // const club2 = await ClubService.getById(awayTeam);
-
-    // if ((club1 as IError).status || (club2 as IError).status) {
-    //   console.log('oi oi');
-    //   return res.status(401).json({ message: 'There is no team with such id!' });
-    // }
-
     if (homeTeam === awayTeam) {
       return res.status(401).json({
         message: 'It is not possible to create a match with two equal teams' });
@@ -59,6 +51,15 @@ class MatchController {
     const { id } = req.params;
     await matchService.patch(+id);
     return res.status(200).json({ message: 'Match finished' });
+  }
+
+  public static async getById(req: Request, res: Response) {
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+
+    await matchService.getById({ homeTeamGoals, awayTeamGoals }, +id);
+
+    return res.status(200).json({ message: 'Successfully altered game!' });
   }
 }
 export default MatchController;
