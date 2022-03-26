@@ -10,7 +10,6 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 import ClubsModel from '../database/models/clubsModel';
-import ClubService from '../services/clubService';
 import { clubs, club } from './mocks/mockClubs';
 
 describe('Filtra todos os /clubs', () => {
@@ -34,7 +33,6 @@ describe('Filtra todos os /clubs', () => {
     });
 
     it('chaiHttpResponse: O objeto possui a propriedade "clubName"', () => {
-        // console.log('createRequest', createRequest);
         expect(chaiHttpResponse.body[0]).to.have.property('clubName');
     })
 
@@ -68,7 +66,6 @@ describe('Filtra todos os /clubs', () => {
         });
     
         it('chaiHttpResponse: O objeto possui a propriedade "clubName"', () => {
-            // console.log('createRequest', createRequest);
             expect(chaiHttpResponse.body).to.have.property('clubName');
         })
     
@@ -100,7 +97,6 @@ describe('Filtra todos os /clubs', () => {
         });
     
         it('chaiHttpResponse: O objeto possui a propriedade "clubName"', () => {
-            // console.log('createRequest', createRequest);
             expect(chaiHttpResponse.body).to.not.have.property('clubName');
         })
     
@@ -113,5 +109,4 @@ describe('Filtra todos os /clubs', () => {
                 expect(chaiHttpResponse.body.message).to.be.equal('club does not exist');
             })
       })
-    
 })

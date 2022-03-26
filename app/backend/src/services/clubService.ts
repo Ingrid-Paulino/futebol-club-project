@@ -1,5 +1,6 @@
 import validateError from '../utils';
 import ClubsModel from '../database/models/clubsModel';
+import { StatusCodes, MSG } from '../enum';
 
 class ClubService {
   public static async getAll() {
@@ -8,10 +9,7 @@ class ClubService {
 
   public static async getById(id: number) {
     const club = await ClubsModel.findByPk(id);
-    // console.log({ club });
-
-    if (!club) return validateError(404, 'club does not exist');
-
+    if (!club) return validateError(StatusCodes.NOT_FOUND, MSG.CLUB_DOES_NOT_EXIST);
     return club;
   }
 }

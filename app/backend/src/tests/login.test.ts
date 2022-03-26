@@ -7,12 +7,9 @@ import { app } from '../app';
 import { Response } from 'superagent';
 
 import UserModel from '../database/models/usersModel';
-import { userMock, userMockComplet, tokenMock } from './mocks/mockLogin';
+import { userMock, tokenMock } from './mocks/mockLogin';
 import { MSG } from '../enum';
-import { User, TUserModel, Token, UserEveryMock } from '../types';
-import { ILogin } from '../interfaces/ILogin';
-
-
+import { Token } from '../types';
 import CreateToken from '../services/createToken';
 
 
@@ -160,7 +157,7 @@ describe('Testa rota POST /login', () => {
         let chaiHttpResponse: Response;
 
         const body = { email: 'xablau@email.com', password: '123456:)' };
-        const response = { message: MSG.INVALID_FIELDS };
+        const response = { message: MSG.INCORRECT_EMAIL_PASSWORD };
 
         before(async () => { sinon.stub(UserModel, "findOne").resolves(null); });
         after(() => { (UserModel.findOne as sinon.SinonStub).restore(); });
@@ -172,7 +169,7 @@ describe('Testa rota POST /login', () => {
 
         it('retorna a mensagem "Incorrect email or password"', async () => {
           chaiHttpResponse = await chai.request(app).post('/login').send(body);
-          expect(chaiHttpResponse.body).to.be.equal(response);
+          expect(chaiHttpResponse.body).to.be.deep.equal(response);
         });
       });
 

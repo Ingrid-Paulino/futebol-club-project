@@ -10,9 +10,8 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 import MatchsModel from '../database/models/matchsModel';
-import { IResMatch } from '../interfaces/IMatch';
 import { match, matchs} from './mocks/mockMatch';
-import CreateToken from '../services/createToken';
+// import CreateToken from '../services/createToken';
 
 
 describe('Filtra todos os /match', () => {
@@ -36,7 +35,6 @@ describe('Filtra todos os /match', () => {
     });
 
     it('chaiHttpResponse: O objeto possui a propriedade "id"', () => {
-        // console.log('createRequest', createRequest);
         expect(chaiHttpResponse.body[0]).to.have.property('id');
     })
 
@@ -50,17 +48,13 @@ describe('Filtra todos os /match', () => {
         })
      })
 
-//etreeeeeeeeeeeeeeeeeeeeeeeeet
-
       describe('Cria uma partida /match', () => { 
           let chaiHttpResponse: Response;
           const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwicGFzc3dvcmQiOiIkMmEkMDgkeGkuSHhrMWN6QU8wblpSLi5CMzkzdTEwYUVEMFJRMU4zUEFFWFE3SHh0TGpLUEVaQnUuUFcifSwiaWF0IjoxNjQ4MTM5NTE2LCJleHAiOjE2NDg3NDQzMTZ9.U58737uGsbbSzYrtcv1KXQhonoaYDSrNZTT_jIVAFps';
   
       before(async () => {
-
           sinon.stub(MatchsModel, "create")
               .resolves( match as MatchsModel);
-    
       });
   
       after(() => {
@@ -83,7 +77,6 @@ describe('Filtra todos os /match', () => {
       });
   
       it('chaiHttpResponse: O objeto possui a propriedade "id"', () => {
-          // console.log('createRequest', createRequest);
           expect(chaiHttpResponse.body).to.have.property('id');
       })
   
@@ -96,9 +89,6 @@ describe('Filtra todos os /match', () => {
               expect(chaiHttpResponse.body.id).to.be.equal(66);
           })
        })
-
-
-
 
      describe('Filtra pelo id do match finalizando a partida', () => { 
       let chaiHttpResponse: Response;
@@ -115,8 +105,7 @@ describe('Filtra todos os /match', () => {
       it('Essa requisição deve retornar código de status 200', async () => {
           chaiHttpResponse = await chai.request(app).patch('/matchs/66/finish')
           expect(chaiHttpResponse).to.have.status(200);
-          // expect(chaiHttpResponse.status).to.be.equal(200);
-          
+          // expect(chaiHttpResponse.status).to.be.equal(200); 
       });
 
       it('chaiHttpResponse: A propriedade "message" possui o texto "Match finished!"',
@@ -125,7 +114,6 @@ describe('Filtra todos os /match', () => {
           })
   
       it('chaiHttpResponse: O objeto possui a propriedade "message"', () => {
-          // console.log('createRequest', createRequest);
           expect(chaiHttpResponse.body).to.have.property('message');
       })
   
@@ -155,7 +143,6 @@ describe('Filtra todos os /match', () => {
             chaiHttpResponse = await chai.request(app).patch('/matchs/66').send(body);
             expect(chaiHttpResponse).to.have.status(200);
             // expect(chaiHttpResponse.status).to.be.equal(200);
-            
         });
 
         it('chaiHttpResponse: A propriedade "message" possui o texto "Successfully altered game!"',
@@ -164,7 +151,6 @@ describe('Filtra todos os /match', () => {
             })
     
         it('chaiHttpResponse: O objeto possui a propriedade "message"', () => {
-            // console.log('createRequest', createRequest);
             expect(chaiHttpResponse.body).to.have.property('message');
         })
     

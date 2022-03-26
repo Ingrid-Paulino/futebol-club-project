@@ -11,10 +11,12 @@ export enum StatusCodes {
 }
 
 export enum MSG {
-  POST_NOT_FOUND = 'Post not found',
   TOKEN_NOT_FOUND = 'Token not found',
   TOKEN_INVALID = 'Invalid token',
 
   INCORRECT_EMAIL_PASSWORD = 'Incorrect email or password',
   INVALID_FIELDS = 'All fields must be filled',
+
+  CLUB_DOES_NOT_EXIST = 'club does not exist',
+  THERE_IS_NO_TEAM_WITH_SUCH_ID = 'There is no team with such id!',
 }

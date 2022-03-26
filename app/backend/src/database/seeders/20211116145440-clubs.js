@@ -1,10 +1,6 @@
 module.exports = {
   up: async (queryInterface) => {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     */
+  
     await queryInterface.bulkInsert(
       'clubs',
       [

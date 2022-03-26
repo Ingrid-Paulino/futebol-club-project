@@ -56,10 +56,12 @@ class MatchController {
   public static async getById(req: Request, res: Response) {
     const { id } = req.params;
     const { homeTeamGoals, awayTeamGoals } = req.body;
-
     await matchService.getById({ homeTeamGoals, awayTeamGoals }, +id);
-
     return res.status(200).json({ message: 'Successfully altered game!' });
   }
+
+  // public static async leaderboardleaderboard() {
+  //   const response = MatchService.leaderboardleaderboard();
+  // }
 }
 export default MatchController;

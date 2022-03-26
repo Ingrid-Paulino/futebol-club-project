@@ -12,10 +12,6 @@ export type JwtConfig = {
 
 export type Token = string;
 
-// export type MockToken = {
-//   token: string,
-// };
-
 export type DecodeData = {
   data: {
     email: string,
@@ -47,21 +43,6 @@ export type TUserModel = {
   },
   token: string,
 };
-
-export type UserEveryMock = [
-  {
-    'id': 1,
-    'username': 'Admin',
-    'role': 'admin',
-    'email': 'admin@admin.com',
-  },
-  {
-    'id': 2,
-    'username': 'Clara',
-    'role': 'admin',
-    'email': 'clara@user.com',
-  },
-];
 
 export type TPartida = {
   homeTeamGoals: number,

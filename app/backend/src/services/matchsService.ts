@@ -16,7 +16,6 @@ class MatchService {
         { model: ClubsModel, as: 'awayClub', attributes: ['clubName'] },
       ],
     });
-
     return filtered;
   }
 
@@ -42,7 +41,6 @@ class MatchService {
       }) as unknown as Club[];
 
       // const response = MatchService.changeRes(filtered);
-      // console.log({ response });
       return filtered;
     }
   }
@@ -69,20 +67,58 @@ class MatchService {
       { inProgress: 0 },
       { where: { id } },
     );
-    // console.log({ matchUpdateReturn });
     return matchUpdateReturn;
   }
 
   public static async getById(partida: TPartida, id: number) {
     const { homeTeamGoals, awayTeamGoals } = partida;
-
     const updateReturn = await MatchsModel.update(
       { homeTeamGoals, awayTeamGoals },
       { where: { id } },
     );
-    // console.log({ updateReturn });
     return updateReturn;
   }
+
+  // public static timeVitorioso(matchs: Club[]) {
+  //   const calculosMatchs = matchs.map((match: Club) => {
+  //     let time1Gols = match.homeTeamGoals;
+  //     let time2Gols = match.awayTeamGoals;
+  //     if (time1Gols > time2Gols) {
+  //       time1Gols += 3;
+  //       let TotalJogos = match.homeTeam;
+  //       return (time1Gols/(TotalJogos*3)*100).toFixed(2);
+  //     } else { time2Gols = 0; }
+
+  //     if (time1Gols < time2Gols) {
+  //       time1Gols += 3;
+  //       let TotalJogos = match.awayTeam;
+  //       return (time2Gols/(TotalJogos*3)*100).toFixed(2);
+  //     } else { time2Gols = 0; }
+
+  //     if (time1Gols === time2Gols) {
+  //       time1Gols += 1;
+  //     } else { time2Gols += 1; }
+  //   });
+
+  //   return calculosMatchs;
+  // }
+
+  // public static AproveitamentoDoTime(matchs: Club[]) {
+  //   const calculosMatchs = matchs.map((match: Club) => {
+  //     let totalPontos = match.homeTeamGoals;
+  //     let TotalJogos = match.homeTeam;
+  //     const conta = (totalPontos/(TotalJogos*3)*100).toFixed(2);
+  //     return conta;
+  //   });
+
+  //   return calculosMatchs;
+  // }
+
+  // public static leaderboardleaderboard() {
+  //   const matchs = MatchService.getAll();
+  //   MatchService.timeVitorioso(matchs),
+
+  // }
 }
 
 export default MatchService;

@@ -16,13 +16,3 @@ export interface LoginMock {
   },
   token: string,
 }
-
-export interface LoginMock2 {
-  user: {
-    id: number,
-    username: string,
-    email: string,
-    role: string,
-  },
-  token: string,
-}

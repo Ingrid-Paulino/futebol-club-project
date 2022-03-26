@@ -23,11 +23,8 @@ class ValidateJWT {
       // console.log({ decoded });
 
       const user = await UserModel.findOne({ where: { email: decoded.data.email } });
-
       if (!user) return res.status(404).json({ message: 'User does not exist' });
-
       req.body = { ...req.body, user };
-      // console.log(req.body);
 
       next();
     } catch (err) {

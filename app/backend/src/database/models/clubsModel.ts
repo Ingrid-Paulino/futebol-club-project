@@ -31,12 +31,8 @@ ClubsModel.init({
   * `Workaround` para aplicar as associations em TS:
   * Associations 1:N devem ficar em uma das instâncias de modelo
   * */
-
-// OtherModel.belongsTo(Example, { foreignKey: 'campoA', as: 'campoEstrangeiroA' });
-// OtherModel.belongsTo(Example, { foreignKey: 'campoB', as: 'campoEstrangeiroB' });
-
-// Example.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
-// Example.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
+// OBS: Posso escolher as associations em qualquer arquivo
+// coloque todas em um mesmo arquivo
 ClubsModel.hasMany(MatchsModel, { foreignKey: 'id', as: 'homeMatch' });
 ClubsModel.hasMany(MatchsModel, { foreignKey: 'id', as: 'awayMatch' });
 
