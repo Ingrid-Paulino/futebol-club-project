@@ -60,8 +60,10 @@ class MatchController {
     return res.status(200).json({ message: 'Successfully altered game!' });
   }
 
-  // public static async leaderboardleaderboard() {
-  //   const response = MatchService.leaderboardleaderboard();
-  // }
+  public static async leaderboardleaderboard(req: Request, res: Response) {
+    const response = await matchService.leaderboardleaderboard();
+
+    return res.status(200).json(response);
+  }
 }
 export default MatchController;
