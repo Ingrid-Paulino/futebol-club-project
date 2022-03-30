@@ -79,16 +79,62 @@ class MatchService {
     return updateReturn;
   }
 
-  // public static retornoLeaderboard() {
-  //   const arrayResult = this.leaderboardleaderboard();
-  //   const decrecente = arrayResult.sort();
-  //   return decrecente.reverse();
-  // }
+  public static async leaderboardHomeTeam() {
+    const clubs: TclubMock[] = await ClubService.getAll();
+    const matchs: MatchsModel[] = await this.getAll();
+
+    const desempenhoTimes = clubs.map((club: TclubMock) => {
+      const res = MatchService.RespostaFinalObj(club.clubName);
+      matchs.forEach((match: MatchsModel) => {
+        if (match.inProgress === 0 && match.homeTeam === club.id) {
+          MatchService.funcoesHometeam(match.homeTeamGoals, match.awayTeamGoals, res);
+        }
+      });
+      res.goalsBalance += (res.goalsFavor - res.goalsOwn);
+      res.efficiency = +(((res.totalPoints / (res.totalGames * 3)) * 100).toFixed(2));
+      return res;
+    });
+    const response = this.retornoLeaderboard(desempenhoTimes);
+    return response;
+  }
+
+  public static async leaderboardAwayTeam() {
+    const clubs: TclubMock[] = await ClubService.getAll();
+    const matchs: MatchsModel[] = await this.getAll();
+
+    const desempenhoTimes = clubs.map((club: TclubMock) => {
+      const res = MatchService.RespostaFinalObj(club.clubName);
+      matchs.forEach((match: MatchsModel) => {
+        if (match.inProgress === 0 && match.awayTeam === club.id) {
+          MatchService.funcoesAwayteam(match.homeTeamGoals, match.awayTeamGoals, res);
+        }
+      });
+      res.goalsBalance += (res.goalsFavor - res.goalsOwn);
+      res.efficiency = +(((res.totalPoints / (res.totalGames * 3)) * 100).toFixed(2));
+      return res;
+    });
+    const response = this.retornoLeaderboard(desempenhoTimes);
+    return response;
+  }
+
+  public static async retornoLeaderboard(desempenhoTimes: MatchData[]) {
+    const arrayResult: MatchData[] = desempenhoTimes;
+    const decrescente = arrayResult.sort((a, b) => {
+      if (a.totalPoints !== b.totalPoints) return b.totalPoints - a.totalPoints;
+      if (a.totalVictories !== b.totalVictories) return b.totalVictories - a.totalVictories;
+      if (a.goalsBalance !== b.goalsBalance) return b.goalsBalance - a.goalsBalance;
+      if (a.goalsFavor !== b.goalsFavor) return b.goalsFavor - a.goalsFavor;
+      if (a.goalsOwn !== b.goalsOwn) return b.goalsOwn - a.goalsOwn;
+      return 0;
+    });
+    return decrescente;
+  }
 
   public static async leaderboardleaderboard() {
     const clubs: TclubMock[] = await ClubService.getAll();
     const matchs: MatchsModel[] = await this.getAll();
-    return clubs.map((club: TclubMock) => {
+
+    const desempenhoTimes = clubs.map((club: TclubMock) => {
       const res = MatchService.RespostaFinalObj(club.clubName);
       matchs.forEach((match: MatchsModel) => {
         if (match.inProgress === 0) {
@@ -101,8 +147,12 @@ class MatchService {
           }
         }
       });
+      res.goalsBalance += (res.goalsFavor - res.goalsOwn);
+      res.efficiency = +(((res.totalPoints / (res.totalGames * 3)) * 100).toFixed(2));
       return res;
     });
+    const response = this.retornoLeaderboard(desempenhoTimes);
+    return response;
   }
 
   public static async funcoesHometeam(
@@ -110,10 +160,7 @@ class MatchService {
     awayTeamGoals: number,
     res: MatchData,
   ) {
-    MatchService.totalJogos(res);
-    MatchService
-      .checarResultadoHomeTeam(homeTeamGoals, awayTeamGoals, res);
-    MatchService.aproveitamentoDoTime(res);
+    MatchService.checarResultadoHomeTeam(homeTeamGoals, awayTeamGoals, res);
   }
 
   public static async funcoesAwayteam(
@@ -121,14 +168,7 @@ class MatchService {
     awayTeamGoals: number,
     res: MatchData,
   ) {
-    MatchService.totalJogos(res);
-    MatchService
-      .checarResultadoAwayTeam(homeTeamGoals, awayTeamGoals, res);
-    MatchService.aproveitamentoDoTime(res);
-  }
-
-  public static async totalJogos(res: MatchData) {
-    res.totalGames += 1;
+    MatchService.checarResultadoAwayTeam(homeTeamGoals, awayTeamGoals, res);
   }
 
   public static async checarResultadoHomeTeam(
@@ -136,14 +176,13 @@ class MatchService {
     awayTeamGoals: number,
     res: MatchData,
   ) {
+    res.totalGames += 1;
     res.goalsFavor += homeTeamGoals;
     res.goalsOwn += awayTeamGoals;
     if (awayTeamGoals === homeTeamGoals) {
       res.totalPoints += 1;
       res.totalDraws += 1;
-    }
-
-    if (homeTeamGoals > awayTeamGoals) {
+    } else if (homeTeamGoals > awayTeamGoals) {
       res.totalPoints += 3;
       res.totalVictories += 1;
     } else { res.totalLosses += 1; }
@@ -154,36 +193,17 @@ class MatchService {
     awayTeamGoals: number,
     res: MatchData,
   ) {
+    res.totalGames += 1;
     res.goalsFavor += awayTeamGoals;
     res.goalsOwn += homeTeamGoals;
-    res.goalsBalance = (res.goalsFavor - res.goalsOwn) * (-1);
+
     if (awayTeamGoals === homeTeamGoals) {
       res.totalPoints += 1;
       res.totalDraws += 1; // empates
-    }
-
-    if (awayTeamGoals > homeTeamGoals) {
+    } else if (awayTeamGoals > homeTeamGoals) {
       res.totalPoints += 3; // total pontos
       res.totalVictories += 1; // total vitorias
     } else { res.totalLosses += 1; } // derrotas
-  }
-
-  public static async aproveitamentoDoTime(res: MatchData) {
-    const TP = res.totalPoints;
-    const TJ = res.totalGames;
-    // const count = ((TP / (TJ * 3)) * 100).toFixed(2);
-    // (+count)
-    res.efficiency += (+((TP / (TJ * 3)) * 100).toFixed(2));
-  }
-
-  public static async gols(
-    homeTeamGoals: number,
-    awayTeamGoals: number,
-    res: MatchData,
-  ) {
-    if (homeTeamGoals > awayTeamGoals) {
-      res.goalsFavor += homeTeamGoals;
-    } else { res.totalLosses += 1; }
   }
 
   public static RespostaFinalObj(name: string) {
