@@ -10,7 +10,9 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 import MatchsModel from '../database/models/matchsModel';
-import { match, matchs} from './mocks/mockMatch';
+import ClubsModel from '../database/models/clubsModel';
+import { clubs, club } from './mocks/mockClubs';
+import { match, matchs, clubDados, clubDadosHome} from './mocks/mockMatch';
 // import CreateToken from '../services/createToken';
 
 
@@ -159,3 +161,123 @@ describe('Filtra todos os /match', () => {
         });
       })
 })
+
+describe('filtra os leaderboard', () => { 
+    describe('rota /leaderboard', () => { 
+        let chaiHttpResponse: Response;
+
+        before(async () => {
+            sinon.stub(ClubsModel, "findAll")
+            .resolves(clubs as ClubsModel[]);
+            sinon.stub(MatchsModel, "findAll")
+            .resolves( matchs as MatchsModel[]);
+        });
+    
+        after(() => {
+            (MatchsModel.findAll as sinon.SinonStub).restore();
+            (ClubsModel.findAll as sinon.SinonStub).restore();
+        });
+    
+        it('Essa requisição deve retornar código de status 200', async () => {
+            chaiHttpResponse = await chai.request(app).get('/leaderboard');
+            // console.log(chaiHttpResponse);
+            
+            expect(chaiHttpResponse).to.have.status(200);
+            // expect(chaiHttpResponse.status).to.be.equal(200);
+            // expect(chaiHttpResponse.body).to.be.deep.equal(clubDados);
+        });
+    
+        it('chaiHttpResponse: O objeto possui a propriedade "name"', () => {
+            expect(chaiHttpResponse.body[0]).to.have.property('name');
+        })
+    
+        it('chaiHttpResponse: A requisição deve retornar um array no corpo da resposta', () => {
+            expect(chaiHttpResponse.body).to.be.a('array');
+        });
+    
+        it('chaiHttpResponse: A propriedade "name" possui o "name:Avaí/Kindermann"',
+            () => {
+                // console.log(chaiHttpResponse.body);
+                
+                expect(chaiHttpResponse.body[0].name).to.be.equal('Avaí/Kindermann');
+            })
+     })
+
+
+
+     describe('rota /leaderboard/home', () => { 
+        let chaiHttpResponse: Response;
+
+        before(async () => {
+            sinon.stub(ClubsModel, "findAll")
+            .resolves(clubs as ClubsModel[]);
+            sinon.stub(MatchsModel, "findAll")
+                .resolves( matchs as MatchsModel[]);
+        });
+    
+        after(() => {
+            (MatchsModel.findAll as sinon.SinonStub).restore();
+            (ClubsModel.findAll as sinon.SinonStub).restore();
+        });
+    
+        it('Essa requisição deve retornar código de status 200', async () => {
+            chaiHttpResponse = await chai.request(app).get('/leaderboard/home');
+            expect(chaiHttpResponse).to.have.status(200);
+            // expect(chaiHttpResponse.status).to.be.equal(200);
+        });
+    
+        it('chaiHttpResponse: O objeto possui a propriedade "name"', async () => {
+            chaiHttpResponse = await chai.request(app).get('/leaderboard/home');
+            expect(chaiHttpResponse.body[0]).to.have.property('name');
+        })
+    
+        it('chaiHttpResponse: A requisição deve retornar um array no corpo da resposta', async () => {
+            chaiHttpResponse = await chai.request(app).get('/leaderboard/home');
+            expect(chaiHttpResponse.body).to.be.a('array');
+        });
+    
+        it('chaiHttpResponse: A propriedade "name" possui o "name: Avaí/Kindermann"',
+            () => {
+                expect(chaiHttpResponse.body[0].name).to.be.equal('Avaí/Kindermann');
+            })
+     })
+
+
+
+     describe('rota /leaderboard/away', () => { 
+        let chaiHttpResponse: Response;
+
+        before(async () => {
+            sinon.stub(ClubsModel, "findAll")
+            .resolves(clubs as ClubsModel[]);
+            sinon.stub(MatchsModel, "findAll")
+                .resolves( matchs as MatchsModel[]);
+        });
+    
+        after(() => {
+            (MatchsModel.findAll as sinon.SinonStub).restore();
+            (ClubsModel.findAll as sinon.SinonStub).restore();
+        });
+    
+        it('Essa requisição deve retornar código de status 200', async () => {
+            chaiHttpResponse = await chai.request(app).get('/leaderboard/away');
+            expect(chaiHttpResponse).to.have.status(200);
+            // expect(chaiHttpResponse.status).to.be.equal(200);
+        });
+    
+        it('chaiHttpResponse: O objeto possui a propriedade "name"', async () => {
+            chaiHttpResponse = await chai.request(app).get('/leaderboard/away');
+            expect(chaiHttpResponse.body[0]).to.have.property('name');
+        })
+    
+        it('chaiHttpResponse: A requisição deve retornar um array no corpo da resposta', async () => {
+            chaiHttpResponse = await chai.request(app).get('/leaderboard/away');
+            expect(chaiHttpResponse.body).to.be.a('array');
+        });
+    
+        it('chaiHttpResponse: A propriedade "name" possui o "name: Avaí/Kindermann"',
+            () => {
+                expect(chaiHttpResponse.body[0].name).to.be.equal('Avaí/Kindermann');
+            })
+     })
+ })

@@ -133,7 +133,6 @@ class MatchService {
   public static async leaderboardleaderboard() {
     const clubs: TclubMock[] = await ClubService.getAll();
     const matchs: MatchsModel[] = await this.getAll();
-
     const desempenhoTimes = clubs.map((club: TclubMock) => {
       const res = MatchService.RespostaFinalObj(club.clubName);
       matchs.forEach((match: MatchsModel) => {
@@ -141,7 +140,6 @@ class MatchService {
           if (match.homeTeam === club.id) {
             MatchService.funcoesHometeam(match.homeTeamGoals, match.awayTeamGoals, res);
           }
-
           if (match.awayTeam === club.id) {
             MatchService.funcoesAwayteam(match.homeTeamGoals, match.awayTeamGoals, res);
           }
@@ -151,8 +149,7 @@ class MatchService {
       res.efficiency = +(((res.totalPoints / (res.totalGames * 3)) * 100).toFixed(2));
       return res;
     });
-    const response = this.retornoLeaderboard(desempenhoTimes);
-    return response;
+    return this.retornoLeaderboard(desempenhoTimes);
   }
 
   public static async funcoesHometeam(
