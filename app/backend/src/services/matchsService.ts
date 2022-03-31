@@ -135,21 +135,29 @@ class MatchService {
     const matchs: MatchsModel[] = await this.getAll();
     const desempenhoTimes = clubs.map((club: TclubMock) => {
       const res = MatchService.RespostaFinalObj(club.clubName);
-      matchs.forEach((match: MatchsModel) => {
-        if (match.inProgress === 0) {
-          if (match.homeTeam === club.id) {
-            MatchService.funcoesHometeam(match.homeTeamGoals, match.awayTeamGoals, res);
-          }
-          if (match.awayTeam === club.id) {
-            MatchService.funcoesAwayteam(match.homeTeamGoals, match.awayTeamGoals, res);
-          }
-        }
-      });
+      this.clubdesempenho(club, matchs, res);
       res.goalsBalance += (res.goalsFavor - res.goalsOwn);
       res.efficiency = +(((res.totalPoints / (res.totalGames * 3)) * 100).toFixed(2));
       return res;
     });
     return this.retornoLeaderboard(desempenhoTimes);
+  }
+
+  public static async clubdesempenho(
+    club: TclubMock,
+    matchs: MatchsModel[],
+    res: MatchData,
+  ) {
+    matchs.forEach((match: MatchsModel) => {
+      if (match.inProgress === 0) {
+        if (match.homeTeam === club.id) {
+          MatchService.funcoesHometeam(match.homeTeamGoals, match.awayTeamGoals, res);
+        }
+        if (match.awayTeam === club.id) {
+          MatchService.funcoesAwayteam(match.homeTeamGoals, match.awayTeamGoals, res);
+        }
+      }
+    });
   }
 
   public static async funcoesHometeam(

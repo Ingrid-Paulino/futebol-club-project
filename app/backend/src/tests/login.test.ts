@@ -114,7 +114,7 @@ describe('Testa rota POST /login', () => {
     });
 
     after(() => {
-      (UserModel.findOne as sinon.SinonStub).restore();
+      (UserModel.create as sinon.SinonStub).restore();
       (CreateToken.createToken as sinon.SinonStub).restore();
     })
 

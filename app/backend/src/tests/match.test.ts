@@ -11,8 +11,8 @@ const { expect } = chai;
 
 import MatchsModel from '../database/models/matchsModel';
 import ClubsModel from '../database/models/clubsModel';
-import { clubs, club } from './mocks/mockClubs';
-import { match, matchs, clubDados, clubDadosHome} from './mocks/mockMatch';
+import { clubs } from './mocks/mockClubs';
+import { match, matchs, clubDados} from './mocks/mockMatch';
 // import CreateToken from '../services/createToken';
 
 
@@ -44,9 +44,9 @@ describe('Filtra todos os /match', () => {
         expect(chaiHttpResponse.body).to.be.a('array');
     });
 
-    it('chaiHttpResponse: A propriedade "id" possui o "id: 1"',
+    it('chaiHttpResponse: A propriedade "id" possui o "id: 9"',
         () => {
-            expect(chaiHttpResponse.body[0].id).to.be.equal(66);
+            expect(chaiHttpResponse.body[0].id).to.be.equal(9);
         })
      })
 
@@ -184,7 +184,11 @@ describe('filtra os leaderboard', () => {
             
             expect(chaiHttpResponse).to.have.status(200);
             // expect(chaiHttpResponse.status).to.be.equal(200);
-            // expect(chaiHttpResponse.body).to.be.deep.equal(clubDados);
+        });
+
+        it('Essa requisição deve retorna um array de objetos', async () => {
+            chaiHttpResponse = await chai.request(app).get('/leaderboard');
+            expect(chaiHttpResponse.body).to.be.deep.equal(clubDados);
         });
     
         it('chaiHttpResponse: O objeto possui a propriedade "name"', () => {
@@ -195,11 +199,11 @@ describe('filtra os leaderboard', () => {
             expect(chaiHttpResponse.body).to.be.a('array');
         });
     
-        it('chaiHttpResponse: A propriedade "name" possui o "name:Avaí/Kindermann"',
+        it('chaiHttpResponse: A propriedade "name" possui o "Bahia"',
             () => {
                 // console.log(chaiHttpResponse.body);
                 
-                expect(chaiHttpResponse.body[0].name).to.be.equal('Avaí/Kindermann');
+                expect(chaiHttpResponse.body[0].name).to.be.equal('Bahia');
             })
      })
 
@@ -236,9 +240,9 @@ describe('filtra os leaderboard', () => {
             expect(chaiHttpResponse.body).to.be.a('array');
         });
     
-        it('chaiHttpResponse: A propriedade "name" possui o "name: Avaí/Kindermann"',
+        it('chaiHttpResponse: A propriedade "name" possui o "name: Bahia"',
             () => {
-                expect(chaiHttpResponse.body[0].name).to.be.equal('Avaí/Kindermann');
+                expect(chaiHttpResponse.body[0].name).to.be.equal('Bahia');
             })
      })
 
@@ -275,9 +279,9 @@ describe('filtra os leaderboard', () => {
             expect(chaiHttpResponse.body).to.be.a('array');
         });
     
-        it('chaiHttpResponse: A propriedade "name" possui o "name: Avaí/Kindermann"',
+        it('chaiHttpResponse: A propriedade "name" possui o "name: Bahia"',
             () => {
-                expect(chaiHttpResponse.body[0].name).to.be.equal('Avaí/Kindermann');
+                expect(chaiHttpResponse.body[0].name).to.be.equal('Bahia');
             })
      })
  })
