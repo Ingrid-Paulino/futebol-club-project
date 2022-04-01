@@ -22,6 +22,7 @@ class App {
     this.app.use(ErrorMiddleware.error1);
   }
 
+  // responsavel: trybe
   private config():void {
     const accessControl: express.RequestHandler = (_req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
